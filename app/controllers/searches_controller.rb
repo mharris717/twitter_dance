@@ -3,9 +3,16 @@ class SearchesController < ApplicationController
     @search = Search.new
   end
   def create
-    obj = Search.create!(params[:search])
-    redirect_to obj
+    respond_to do |format|
+      format.js do
+        ps = params[:search] || JSON.parse(params[:model])
+        obj = Search.create!(ps)
+        puts "obj #{obj.inspect}"
+        render :json => obj.to_json
+      end
+    end
   end
+  
   def show
     if params[:id] =~ /^[0-9a-z]{24}$/i
       @search = Search.find(params[:id])

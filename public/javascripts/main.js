@@ -1,6 +1,6 @@
 $(function(){
   window.Search = Backbone.Model.extend({
-    url: function() {
+    urlf: function() {
       return "http://localhost:3000/searches/"+this.get('term')
     },
 
@@ -8,6 +8,16 @@ $(function(){
       
     }
   });
+  
+  window.SearchList = Backbone.Collection.extend({
+    model: Search,
+    
+    url: "http://localhost:3000/searches",
+    
+    initialize: function() {
+      console.debug('list initialize')
+    }
+  })
 
 
   window.SearchView = Backbone.View.extend({
@@ -18,6 +28,7 @@ $(function(){
     initialize: function() {
       _.bindAll(this, 'render');
       this.model.bind('change', this.render);
+      this.model.view = this
     },
     
     render: function() {
@@ -54,15 +65,22 @@ $(function(){
       var me = this
       
       var model = new Search({term: this.get_term()})
-      model.fetch()
+      Searches.add(model)
+      model.save()
+      
+      //model.fetch()
       var v = new SearchView({model: model})
+      
       v.render_callback = function(v) {
         $(me.el).append(v.el)
       }
     }
   })
   
+  Searches = new SearchList()
   window.App = new AppView;
+  
+  $('#search_term').change()
   
   
 });
