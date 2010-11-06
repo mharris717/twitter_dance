@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TwitterDance</title>
+  <%= stylesheet_link_tag :all %>
+  <%= javascript_include_tag 'http://documentcloud.github.com/underscore/underscore.js' %>
+  <%= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.js' %>
+  <%= javascript_include_tag 'json2' %>
+  <%= javascript_include_tag 'http://documentcloud.github.com/backbone/backbone.js' %>
+
+  <%= javascript_include_tag 'main' %>
+  <%= stylesheet_link_tag 'base' %>
+  <%= csrf_meta_tag %>
+</head>
+<body>
+
+<%= yield %>
+
+
+
+</body>
+</html>

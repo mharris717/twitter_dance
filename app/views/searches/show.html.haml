@@ -1,0 +1,10 @@
+Term
+= @search.term
+%br
+%br
+Tweets
+%br
+- @search.tweets.each do |t|
+  = "#{t.from_user}: #{t.text}"
+  %br
+  %br

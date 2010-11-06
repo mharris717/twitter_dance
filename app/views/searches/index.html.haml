@@ -1,0 +1,8 @@
+#main
+  - form_for @search do |f|
+    = f.label :term
+    = f.text_field :term
+    = f.submit 'Search'
+
+#search-template.template
+  <%= term %>

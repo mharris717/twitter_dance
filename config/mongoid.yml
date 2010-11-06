@@ -1,0 +1,28 @@
+defaults: &defaults
+  host: flame.mongohq.com
+  username: twitter_dance
+  password: twitterd123
+  
+  # slaves:
+  #   - host: slave1.local
+  #     port: 27018
+  #   - host: slave2.local
+  #     port: 27019
+
+development:
+  <<: *defaults
+  port: 27021
+  database: twitter_dance_development
+
+test:
+  <<: *defaults
+  port: 27022
+  database: twitter_dance_test
+
+# set these environment variables on your prod server
+production:
+  host: <%= ENV['MONGOID_HOST'] %>
+  port: <%= ENV['MONGOID_PORT'] %>
+  username: <%= ENV['MONGOID_USERNAME'] %>
+  password: <%= ENV['MONGOID_PASSWORD'] %>
+  database: <%= ENV['MONGOID_DATABASE'] %>
