@@ -1,3 +1,14 @@
+function getSelectedText() {
+    if (window.getSelection) {
+        return window.getSelection();
+    }
+    else if (document.selection) {
+        return document.selection.createRange().text;
+    }
+    return null;
+}
+
+
 $(function(){
   window.Search = Backbone.Model.extend({
     urlf: function() {
@@ -66,11 +77,21 @@ $(function(){
     
     events : {
       "change #search_term" : "render",
-      "click a.search" : "doThing"
+      "click a.search" : "doThing",
+      "click": "narrowSearch"
     },
     
     initialize: function() {
-      _.bindAll(this, 'render','doThing')
+      _.bindAll(this, 'render','doThing','narrowSearch')
+    },
+    
+    narrowSearch: function(event) {
+      var text = getSelectedText()
+      if (text && text != '') {
+        var term = this.get_term() + " " + text
+        this.showTerm(term,true)
+        $("#search_term").val(term)
+      }
     },
 
     get_term: function() {
