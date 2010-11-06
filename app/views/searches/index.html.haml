@@ -3,6 +3,14 @@
     = f.label :term
     = f.text_field :term
     = f.submit 'Search'
+  #searches
+  #results
 
 #search-template.template
   <%= term %>
+  
+#tweet-template.template
+  .user
+    <%= from_user %>
+  .body
+    <%= text %>

@@ -21,7 +21,7 @@ $(function(){
 
 
   window.SearchView = Backbone.View.extend({
-    tagName: 'div',
+    el: $('#results'),
     
     template: _.template($('#search-template').text()),
 
@@ -35,45 +35,69 @@ $(function(){
       var me = this
       $(this.el).html(this.template(this.model.toJSON()));
 
-      console.debug("tweets size " + this.model.get('tweets').length)
       _.each(this.model.get('tweets'),function(tweet) {
-        $(me.el).append(tweet['text'])
+        var tv = new TweetView({model: tweet})
+        tv.render()
+        $(me.el).append(tv.el)
       })
-      
-      this.render_callback(this)
 
       return this;
     }
   });
   
+  window.TweetView = Backbone.View.extend({
+    tagName: "div", 
+    
+    template: _.template($('#tweet-template').html().replace("&lt;","<").replace("&gt;",">").replace("&lt;","<").replace("&gt;",">")),
+    
+    initialize: function() {
+      _.bindAll(this, 'render');
+    },
+    
+    render: function() {
+      console.debug(this.model)
+      $(this.el).html(this.template(this.model));
+      return this;
+    }
+  })
+  
   window.AppView = Backbone.View.extend({
     el: $('#main'),
     
     events : {
-      "change #search_term" : "render"
+      "change #search_term" : "render",
+      "click a.search" : "doThing"
     },
     
     initialize: function() {
-      _.bindAll(this, 'render')
+      _.bindAll(this, 'render','doThing')
     },
 
     get_term: function() {
       return $('#search_term').val();
     },
-
-    render: function() {
+    
+    doThing: function(event) {
+      this.showTerm($(event.target).text(),false)
+    },
+    
+    showTerm: function(term,new_term) {
       var me = this
       
-      var model = new Search({term: this.get_term()})
+      var model = new Search({term: term})
       Searches.add(model)
       model.save()
       
-      //model.fetch()
-      var v = new SearchView({model: model})
+      var link = $("<div>")
+      var a = $("<a>").attr("href","#").attr('class','search').text(term)
+      link.append(a)
+      if (new_term) this.$('#searches').append(link)
       
-      v.render_callback = function(v) {
-        $(me.el).append(v.el)
-      }
+      var v = new SearchView({model: model})
+    },
+    
+    render: function() {
+      this.showTerm(this.get_term(),true)
     }
   })
   

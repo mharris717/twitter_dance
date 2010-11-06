@@ -1,3 +1,17 @@
 .template {
   visibility: hidden;
 }
+
+#main {
+  height: 700px;
+}
+
+#searches {
+  float: left;
+  width: 10%;
+  height: 100%;
+}
+
+#results {
+  
+}
